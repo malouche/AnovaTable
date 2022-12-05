@@ -4,7 +4,7 @@ library(plyr)
 library(DT)
 library(ggplot2)
 library(multcompView)
-
+library(readr)
 
 ### functions
 
@@ -13,8 +13,8 @@ TableAnova2=function(X,alpha){
   library(plyr)
   X=as.data.frame(X)
   X=na.omit(X)
-  X[,1]=factor(X[,1])
-  X[,2]=factor(X[,2])
+  X[,1]=as.factor(X[,1])
+  X[,2]=as.factor(X[,2])
   cond1=levels(X[,1])
   cond2=levels(X[,2])
   p=length(cond1)
@@ -60,7 +60,7 @@ TableAnova1=function(X,alpha){
   library(plyr)
   X=as.data.frame(X)
   X=na.omit(X)
-  
+  X[,1]=as.factor(X[,1])
   cond1=levels(X[,1])
   
   p=length(cond1)
@@ -208,7 +208,8 @@ server = function(input, output, session){
     
     inFile <- input$file1
     if (is.null(inFile)) return(NULL)
-    data <- read.csv(inFile$datapath, header = TRUE,row.names=1)
+    #data <- read.csv(inFile$datapath, header = TRUE,row.names=1)
+    data <- read_csv(inFile$datapath)
     data
   })
   
@@ -218,7 +219,8 @@ server = function(input, output, session){
     #)
     inFile <- input$file2
     if (is.null(inFile)) return(NULL)
-    data <- read.csv(inFile$datapath, header = TRUE,row.names=1)
+    #data <- read.csv(inFile$datapath, header = TRUE,row.names=1)
+    data <- read_csv(inFile$datapath)
     data
   })
   
@@ -262,8 +264,9 @@ server = function(input, output, session){
     
     
     x=sapply(myData1(),class)
-    x=(x=="factor")
+    x=(x=="character")
     df=names(myData1())[x]
+    
     #if (identical(df, '') || identical(df,data.frame())) return(NULL)
     # Variable selection:    
     selectInput("factorVar_i", "Factor variable",
@@ -277,7 +280,7 @@ server = function(input, output, session){
     
     
     x=sapply(myData2(),class)
-    x=(x=="factor")
+    x=(x=="character")
     df=names(myData2())[x]
     #if (identical(df, '') || identical(df,data.frame())) return(NULL)
     # Variable selection:    
@@ -291,7 +294,7 @@ server = function(input, output, session){
     
     
     x=sapply(myData2(),class)
-    x=(x=="factor")
+    x=which(x=="character")
     df=names(myData2())[x]
     #if (identical(df, '') || identical(df,data.frame())) return(NULL)
     # Variable selection:    
@@ -325,16 +328,12 @@ PrefANOVA2 <- reactive({
 
 output$anova1 <-renderDataTable({
   df=PrefANOVA1()
-  datatable(df,rownames = F,options = list(
-    columnDefs = list(list(className = 'dt-center',width = '200px'))
-  ))
+  df
 })
 
 output$anova2 <-renderDataTable({
   df=PrefANOVA2()
-  datatable(df,rownames = F,options = list(
-    columnDefs = list(list(className = 'dt-center',width = '200px'))
-  ))
+  df
 })
 
 

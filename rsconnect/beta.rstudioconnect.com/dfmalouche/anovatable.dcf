@@ -1,0 +1,14 @@
+name: anovatable
+title: AnovaTable
+username: dfmalouche
+account: dfmalouche
+server: beta.rstudioconnect.com
+hostUrl: https://beta.rstudioconnect.com/__api__
+appId: 25436
+bundleId: 125016
+url: https://beta.rstudioconnect.com/content/f73a9d0e-6b72-4d33-9d88-d68519dddc4c/
+when: 1670246735.22347
+lastSyncTime: 1670246735.22348
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: anova_functions.R|data_OO.csv_ANOVA1.csv|decathlon.csv|example_anova.R|excute_anova.R|README.md|TableAnova.R
