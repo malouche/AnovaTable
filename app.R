@@ -126,8 +126,8 @@ draw_tukey=function(d,alpha_sig=.05,alpha_tr=.5,xlab,ylab){
 }
 
 ui = fluidPage(
-  titlePanel("Table of One-way and Two-way ANOVA with post-hoc Tukey HSD (Honestly Significant Difference)"),
-   tags$p("This app can help you to perform a One-way and Two-way ANOVA with post-hoc Tukey HSD. 
+  titlePanel("Table of One-way and Conditional One-way ANOVA with post-hoc Tukey HSD (Honestly Significant Difference)"),
+   tags$p("This app can help you to perform a One-way and Conditional One-way ANOVA with post-hoc Tukey HSD. 
          Your data has to be in a CSV file containing at least one factor variable and one Quantitative variable. 
  The result of this analysis is displayed in a table that can be downloaded in a CSV file.  
          We had used in this  app the R package agricolae. If you want to learn more about this method you can visit this website"),
@@ -170,7 +170,7 @@ ui = fluidPage(
               )
               
   ),
-  tabPanel("Two-way ANOVA",
+  tabPanel("Conditional One-way ANOVA",
               sidebarLayout(
                 sidebarPanel(
                   fileInput('file2', 'Upload your CSV File',
@@ -207,6 +207,12 @@ server = function(input, output, session){
    # )
     
     inFile <- input$file1
+    
+    validate(
+      need(input$file1 != "", "Please select a data set")
+    )
+    
+    
     if (is.null(inFile)) return(NULL)
     #data <- read.csv(inFile$datapath, header = TRUE,row.names=1)
     data <- read_csv(inFile$datapath)
@@ -214,9 +220,9 @@ server = function(input, output, session){
   })
   
   myData2 <- reactive({
-    #validate(
-    #  need(input$myData2 != "", "")
-    #)
+    validate(
+      need(input$myData2 != "", "Please select a data set")
+    )
     inFile <- input$file2
     if (is.null(inFile)) return(NULL)
     #data <- read.csv(inFile$datapath, header = TRUE,row.names=1)
@@ -238,7 +244,8 @@ server = function(input, output, session){
     
     # Variable selection:    
     selectInput("varsOne", "Variables to use:",
-                names(df), names(df), multiple =TRUE)            
+                names(df), names(df), multiple =TRUE) 
+   
   })
   
 ## for two factors
@@ -255,7 +262,8 @@ server = function(input, output, session){
     
     # Variable selection:    
     selectInput("varsTwo", "Quantitative variables to use:",
-                names(df), names(df), multiple =TRUE)            
+                names(df), names(df), multiple =TRUE)   
+  
   })
   
 ## Factor Var for one factor ANOVA
@@ -270,7 +278,8 @@ server = function(input, output, session){
     #if (identical(df, '') || identical(df,data.frame())) return(NULL)
     # Variable selection:    
     selectInput("factorVar_i", "Factor variable",
-                df, df, multiple =F)            
+                df, df, multiple =F) 
+   
   })
   
 ## Factor Var for two factor ANOVA
@@ -285,7 +294,8 @@ server = function(input, output, session){
     #if (identical(df, '') || identical(df,data.frame())) return(NULL)
     # Variable selection:    
     selectInput("factorVar1_i", "Factor variable 1",
-                df, df, multiple =F)            
+                df, df, multiple =F)  
+   
   })
   
   ## Variable 2
@@ -299,7 +309,8 @@ server = function(input, output, session){
     #if (identical(df, '') || identical(df,data.frame())) return(NULL)
     # Variable selection:    
     selectInput("factorVar2_i", "Factor variable 2",
-                df, df, multiple =F)            
+                df, df, multiple =F)  
+   
   })
   
 ## Performing ANOVA one factor
@@ -328,7 +339,8 @@ PrefANOVA2 <- reactive({
 
 output$anova1 <-renderDataTable({
   df=PrefANOVA1()
-  df
+  if (identical(df, '') || identical(df,data.frame())) return(NULL)
+    else df
 })
 
 output$anova2 <-renderDataTable({
@@ -400,6 +412,6 @@ output$downloadGraphOneFactor <- downloadHandler(
   ### final
 }
 
-
+if(interactive()){
 shinyApp(ui=ui,server=server)
-
+}

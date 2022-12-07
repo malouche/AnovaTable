@@ -5,10 +5,10 @@ account: dfmalouche
 server: beta.rstudioconnect.com
 hostUrl: https://beta.rstudioconnect.com/__api__
 appId: 25436
-bundleId: 125016
+bundleId: 125632
 url: https://beta.rstudioconnect.com/content/f73a9d0e-6b72-4d33-9d88-d68519dddc4c/
-when: 1670246735.22347
-lastSyncTime: 1670246735.22348
+when: 1670436131.21584
+lastSyncTime: 1670436131.21586
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: anova_functions.R|data_OO.csv_ANOVA1.csv|decathlon.csv|example_anova.R|excute_anova.R|README.md|TableAnova.R
+ignoredFiles: anova_functions.R|data_conso_rahma.csv|data_for_ACP.csv|data_OIL.csv|decathlon.csv|example_anova.R|excute_anova.R|README.md|TableAnova.R|tips.csv
